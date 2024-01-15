@@ -5,15 +5,30 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla App Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
     <form class="form">
-      <label for="">
-        <input type="text" name="searchInput" id="searchInput" />
+      <label for="searchInput">
+        <input
+          type="text"
+          name="searchInput"
+          id="searchInput"
+          placeholder="Search images..."
+        />
       </label>
       <button type="submit" class="search_btn">Search</button>
     </form>
+
+    <span class="loader"></span>
+
+    <ul class="gallery"></ul>
 
     <script type="module" src="./main.js"></script>
   </body>
