@@ -14,15 +14,27 @@ function search(event) {
     event.preventDefault();
 
     const apiKey = '41833958-d4e1402628473c9a9cbd6bb32';
-    const InputValue = searchInput.value;
-    const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=${InputValue}&image_type=photo&orientation=horizontal&safesearch=true`;
-    
+    const inputValue = searchInput.value.trim();
+
+    if (!inputValue) {
+        iziToast.warning({
+            message: "Please enter a search query.",
+        });
+        return;
+    }
+
+    const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true`;
     loader.style.display = 'block';
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(images => { 
-            console.log(images)
+                if (images.hits.length === 0) {
+                iziToast.error({
+                    message: "No images found. Please try again with a different search query.",
+                });
+                return;
+            }
 
             const imageHTML = images.hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
                 return `
@@ -40,14 +52,11 @@ function search(event) {
             }).join('');
 
             gallery.innerHTML = imageHTML;
-            
             const lightbox = new SimpleLightbox('.gallery a');
-
             lightbox.refresh();
         })
-        .catch(error => {
-            console.error('Error:', error);
-            iziToast.show({
+        .catch(() => {
+            iziToast.error({
                 message: "Sorry, there are no images matching your search query. Please try again!",
            })
         })
