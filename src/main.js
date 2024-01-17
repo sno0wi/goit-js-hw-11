@@ -4,14 +4,29 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 const form = document.querySelector('.form');
-form.addEventListener('submit', search);
 const searchInput = document.getElementById('searchInput');
 const gallery = document.querySelector('.gallery')
 const loader = document.querySelector('.loader')
 
+function getSearchQueryFromLocalStorage() {
+    return localStorage.getItem('searchQuery') || '';
+}
+function saveSearchQueryToLocalStorage(query) {
+    localStorage.setItem('searchQuery', query);
+}
+
+function fillInputFromLocalStorage() {
+    const savedQuery = getSearchQueryFromLocalStorage();
+    searchInput.value = savedQuery;
+}
+function removeSearchQueryToLocalStorage(){
+    localStorage.removeItem('searchQuery')
+}
+
 
 function search(event) {
     event.preventDefault();
+    removeSearchQueryToLocalStorage();
 
     const apiKey = '41833958-d4e1402628473c9a9cbd6bb32';
     const inputValue = searchInput.value.trim();
@@ -64,3 +79,7 @@ function search(event) {
             loader.style.display = 'none';
         });
 }
+
+fillInputFromLocalStorage();
+searchInput.addEventListener('input', () => saveSearchQueryToLocalStorage(event.target.value));
+form.addEventListener('submit', search);
